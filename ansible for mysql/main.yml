@@ -1,0 +1,26 @@
+- name: unarchive Mysql
+unarchive: src=mysql-5.7.24-linux-glibc2.12-x86_64.tar.gz dest=/usr/local/ owner=mysql group=mysql
+- name: mkdir mysql datadir
+file: path=/opt/mysql/data owner=mysql group=mysql state=directory
+- name: mkdir mysql log dir
+file: path=/opt/mysql/log owner=mysql group=mysql state=directory
+
+- name: mkdir mysql tmp dir
+file: path=/opt/mysql/tmp owner=mysql group=mysql state=directory
+- name: change directory
+command: mv /usr/local/mysql-5.7.24-linux-glibc2.12-x86_64 /usr/local/mysql
+#- name: init.d mysql file
+# command: cp /usr/local/mysql/support-files/mysql.server /etc/init.d/
+
+- name: cp my.cnf
+copy: src=my.cnf dest=/etc/my.cnf
+- name: initid mysql-server
+command: /usr/local/mysql/bin/mysqld --defaults-file=/etc/my.cnf --initialize --user=mysql
+- name: start mysql
+command: /usr/local/mysql/support-files/mysql.server start
+- name: set password
+copy: src=setpassword.sh dest=/opt/mysql/ mode=755
+- name: sh setpassword
+shell: sh /opt/mysql/setpassword.sh
+- name: mysql binary command
+command: cp /usr/local/mysql/bin/* /usr/bin/
