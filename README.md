@@ -21,4 +21,4 @@ roles:
 ansible-playbook   /opt/ansible/mysqlinstall.yml
 
 4）验证mysql服务，可登陆认证：
-mysql -uroot -pQazwsx#3456  -S /opt/mysql/mysqld.sock
+mysql -uroot -pmysql  -S /opt/mysql/mysqld.sock
